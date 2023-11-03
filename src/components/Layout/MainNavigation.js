@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 
 import classes from './MainNavigation.module.css';
 import { useContext } from 'react';
 import StoreContext from '../../store/StoreContext';
 const MainNavigation = () => {
+  const nav = useNavigate();
   const contxt = useContext(StoreContext);
   console.log(contxt)
   return (
@@ -14,13 +15,18 @@ const MainNavigation = () => {
       <nav>
         <ul>
           <li>
-         {contxt.token == null && <Link to='/auth'>Login</Link>}   
+         {localStorage.getItem("token") == undefined && <Link to='/auth'>Login</Link>}   
           </li>
           <li>
-          {contxt.token != null && <Link to='/profile'>Profile</Link>}
+          {localStorage.getItem("token") != undefined && <Link to='/profile'>Profile</Link>}
           </li>
           <li>
-          {contxt.token != null && <button onClick={() => contxt.removeToken()}>Logout</button>}
+          {localStorage.getItem("token") != undefined && <button onClick={() =>{ 
+            localStorage.removeItem("token");
+            contxt.removeToken()
+            nav("/")
+                         
+          }}>Logout</button>}
           </li>
         </ul>
       </nav>

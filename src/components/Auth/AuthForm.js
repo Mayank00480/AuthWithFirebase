@@ -1,8 +1,9 @@
 import { useState, useRef, useContext } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import classes from './AuthForm.module.css';
 import StoreContext from '../../store/StoreContext';
 const AuthForm = () => {
+  const nav = useNavigate();
   const cntxt = useContext(StoreContext);
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading , setIsLoading] = useState(false);
@@ -39,6 +40,11 @@ url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key
           console.log('success');
           return response.json().then(data =>{
             cntxt.addToken(data.idToken);
+            localStorage.setItem("token" , data.idToken);
+         
+            cntxt.addToken(data.idToken);
+            nav("/profile")
+            
           })
         }
         else{

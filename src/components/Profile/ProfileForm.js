@@ -13,14 +13,16 @@ const ProfileForm = () => {
               fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCkhai6yGQVBzj73WIbzXoUIYZOJDTvX1Q',{
                 method : 'POST',
                 body : JSON.stringify({
-                  idToken : context.token,
+                  idToken : localStorage.getItem("token"),
                   password : passwordData.current.value
                 })
               })
               .then(response =>  {
                 console.log('success');
+                localStorage.removeItem("token");
                 navigate('/auth');
                 context.removeToken();
+                
               })
          }
   }
