@@ -1,8 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
 
 import classes from './AuthForm.module.css';
-
+import StoreContext from '../../store/StoreContext';
 const AuthForm = () => {
+  const cntxt = useContext(StoreContext);
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading , setIsLoading] = useState(false);
   const emailInput = useRef();
@@ -19,7 +20,7 @@ const AuthForm = () => {
         password : passwordInputHandler
        
       }
-      console.log(myObj)
+   //   console.log(myObj)
     let url; 
       if(isLogin){
 url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCkhai6yGQVBzj73WIbzXoUIYZOJDTvX1Q'
@@ -36,7 +37,9 @@ url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key
         setIsLoading(false);
         if(response.ok){
           console.log('success');
-          console.log(response.json());
+          return response.json().then(data =>{
+            cntxt.addToken(data.idToken);
+          })
         }
         else{
           return response.json().then(data => {
