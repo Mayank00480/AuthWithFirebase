@@ -19,7 +19,8 @@ const ProfileForm = () => {
               })
               .then(response =>  {
                 console.log('success');
-                navigate('/auth')
+                navigate('/auth');
+                context.removeToken();
               })
          }
   }
